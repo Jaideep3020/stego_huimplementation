@@ -29,7 +29,7 @@ python3.14 -m venv .venv
 .venv/bin/python -m pip install -r requirements.txt
 ```
 
-Choose this `.venv` interpreter in VS Code. Dependency versions are pinned. The code has been executed on macOS; Windows/Linux execution has not yet been independently tested. The Python runner avoids Make, shell activation and hardcoded temporary-directory paths.
+Choose this `.venv` interpreter in VS Code. Dependency versions are pinned. The full dataset evaluation has been executed on macOS. The dataset-independent test suite also passed GitHub Actions on Windows, Linux and macOS; the complete CT evaluation has not been run on those other platforms. The Python runner avoids Make, shell activation and hardcoded temporary-directory paths.
 
 ## 3. Copy the dataset
 
@@ -86,4 +86,13 @@ These shorter commands assume the intended virtual environment is active. Output
 
 ## 5. Continue work
 
-Before changing code on the other machine, run `git pull`. After making and testing changes, commit and push your source/configuration changes. Generated arrays and images stay local. Copying the same data and using the fixed configuration is essential; changing a dataset, kernel or threshold can change the results.
+Before changing code on the other machine, run `git pull`. Configure the commit author on that machine if needed:
+
+```sh
+git config user.name "Your name"
+git config user.email "Your commit email"
+```
+
+Authenticate the local Git client with GitHub before pushing. The GitHub connection inside Codex does not automatically configure terminal credentials on another PC.
+
+ After making and testing changes, commit and push your source/configuration changes. Generated arrays and images stay local. Copying the same data and using the fixed configuration is essential; changing a dataset, kernel or threshold can change the results.
