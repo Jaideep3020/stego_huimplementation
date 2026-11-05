@@ -1,0 +1,26 @@
+# Original datasets and generated arrays/images are regenerated locally.
+DATASET/
+data/
+visualization/
+visualization.zip
+reports/cache/
+reports/**/*.png
+reports/*.log
+reports/verification_repeat/
+*.npy
+*.npz
+*.zip
+
+# Python and editor machine state.
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+.DS_Store
+
+# Local credentials/configuration.
+.env
+.env.*
+!.env.example
+kaggle.json

@@ -1,0 +1,9 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {"name": "Audit CT dataset", "type": "debugpy", "request": "launch", "module": "src.io_chaos", "cwd": "${workspaceFolder}"},
+    {"name": "Paper method: Dice and mIoU", "type": "debugpy", "request": "launch", "module": "src.run_experiment", "args": ["--workers", "1", "--backend", "scipy"], "cwd": "${workspaceFolder}", "justMyCode": true},
+    {"name": "Patient visualizations", "type": "debugpy", "request": "launch", "module": "src.export_segmentations", "args": ["--out", "visualization", "--no-archive", "--workers", "1"], "cwd": "${workspaceFolder}"},
+    {"name": "Run tests", "type": "debugpy", "request": "launch", "module": "unittest", "args": ["discover", "-s", "tests", "-v"], "cwd": "${workspaceFolder}"}
+  ]
+}

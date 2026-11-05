@@ -1,0 +1,11 @@
+backend: opencv
+pipeline:
+  close_k: 5
+  connectivity: 2
+  med_k: 3
+  open_k: 5
+  order: fig3
+  shape: disk
+  tmax: 200
+  tmin: 50
+  use_lcc: true

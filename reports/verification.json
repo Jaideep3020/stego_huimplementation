@@ -1,0 +1,17 @@
+{
+  "determinism": {
+    "per_patient.csv": {
+      "identical": true,
+      "sha256": "7804c6320080b748b094bbb13eaa1a546bae6cb43ac468812a5a6068b27aeecd"
+    },
+    "per_slice.csv": {
+      "identical": true,
+      "sha256": "061ebd6776cabd98150b27824c2d758987fdfbe32b6d3afb5de416cffa985bb0"
+    },
+    "summary.json": {
+      "identical": true,
+      "sha256": "227fb48bac02e3a1e0da8e0597ff0e32bbd0e78a01f125b79df1047c60259315"
+    }
+  },
+  "method": "Fixed paper parameters for every patient"
+}

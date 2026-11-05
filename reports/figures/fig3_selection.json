@@ -1,0 +1,11 @@
+{
+  "patient": "28",
+  "slices": [
+    0,
+    25,
+    50,
+    76,
+    101
+  ],
+  "rule": "Lower median patient Dice; five equally spaced GT-positive indices"
+}

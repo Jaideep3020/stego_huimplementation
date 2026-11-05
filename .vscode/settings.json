@@ -1,0 +1,7 @@
+{
+  "python.testing.unittestEnabled": true,
+  "python.testing.pytestEnabled": false,
+  "python.testing.unittestArgs": ["-v", "-s", "./tests", "-p", "test_*.py"],
+  "files.watcherExclude": {"**/DATASET/**": true, "**/reports/cache/**": true},
+  "search.exclude": {"DATASET/**": true, "reports/cache/**": true}
+}

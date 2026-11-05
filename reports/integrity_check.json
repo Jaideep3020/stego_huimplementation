@@ -1,0 +1,16 @@
+{
+  "source_sha256_verified": true,
+  "hu_and_gt_caches_match_originals": true,
+  "reference_backend": "scipy; original DICOM and GT; fresh per-slice median filtering",
+  "scope": "Original-source fingerprints, source/cache equality, TP/FP/FN/TN, and C1 Dice/IoU/mIoU for the fixed paper method. Anatomical label correctness requires separate visual review.",
+  "patients": 20,
+  "slices": 2874,
+  "protocols": {
+    "paper_protocol": {
+      "confusion_counts_match": true,
+      "mean_liver_iou": 0.5820652364577313,
+      "mean_iou": 0.762386753387092,
+      "mean_dice": 0.7124826033405671
+    }
+  }
+}

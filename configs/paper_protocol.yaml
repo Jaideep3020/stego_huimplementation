@@ -1,0 +1,11 @@
+data: DATASET/CHAOS_Train_Sets/Train_Sets/CT
+pipeline:
+  tmin: 50
+  tmax: 200
+  med_k: 3
+  open_k: 5
+  close_k: 5
+  order: fig3
+  connectivity: 2
+  shape: disk
+  use_lcc: true

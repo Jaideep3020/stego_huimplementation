@@ -1,0 +1,1 @@
+Histogram uses raw HU, not windowed display pixels. The non-liver HU > -500 condition is a simple body proxy, not an anatomical body mask. Curves are normalized within the displayed -200 to 400 HU range. Visualization settings do not alter segmentation.

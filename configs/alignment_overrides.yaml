@@ -1,0 +1,5 @@
+# Overrides require direct inspection evidence and are always recorded in the audit.
+'14':
+  order: forward
+  reason: "Visual CT/GT overlays show forward masks follow the liver boundary; reversed masks cross the body boundary. Rough HU overlap falsely prefers reversal because this enhanced liver is mostly above the threshold band."
+  evidence: reports/figures/alignment_CT_14.png
