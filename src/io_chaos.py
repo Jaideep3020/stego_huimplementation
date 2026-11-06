@@ -69,7 +69,8 @@ def read_patient(path, alignment_overrides=None):
     z = np.array([float(d.ImagePositionPatient[2]) for d in ds])
     dz = np.abs(np.diff(z))
     assert np.all(dz > 0) and (np.all(np.diff(z) > 0) or np.all(np.diff(z) < 0)), 'Non-monotonic slices'
-    # Use central half; a heuristic diagnostic, not a proof of anatomical registration.
+    # P1 preserves native orientation — no HU-overlap heuristic reversal.
+    # The overlap values are still computed for diagnostic reporting only.
     central = slice(len(ds) // 4, 3 * len(ds) // 4)
     rough = (hu >= 50) & (hu <= 200)
     def overlap(g):
@@ -80,10 +81,8 @@ def read_patient(path, alignment_overrides=None):
     override = (alignment_overrides or {}).get(path.name)
     if override and override["order"] not in ("forward", "reversed"):
         raise ValueError("Alignment override must be forward or reversed")
-    flipped = override["order"] == "reversed" if override else heuristic_flipped
-    if flipped:
-        gt = gt[::-1].copy()
-        gt_files = gt_files[::-1]
+    # Never flip: P1 preserves established image/mask pairing.
+    flipped = False
     fingerprint = hashlib.sha256()
     for dcm, mask in zip(files, gt_files):
         fingerprint.update(dcm.read_bytes())

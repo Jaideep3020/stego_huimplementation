@@ -81,18 +81,18 @@ def check(reports='reports', workers=6):
             totals = counts[:, 1:].sum(axis=0)
             require(np.array_equal(totals, pp.loc[pid, ['tp', 'fp', 'fn', 'tn']].to_numpy()), f'{protocol}/{pid}: patient totals differ')
             tp, fp, fn, tn = map(int, totals)
-            liver = tp / (tp + fp + fn) if tp + fp + fn else 1.0
-            background = tn / (tn + fp + fn) if tn + fp + fn else 1.0
+            liver = tp / (tp + fp + fn) if tp + fp + fn else 0.0
+            background = tn / (tn + fp + fn) if tn + fp + fn else 0.0
             miou = (liver + background) / 2
             require(np.isclose(pp.loc[pid, 'iou_liver'], liver, atol=1e-10, rtol=0), f'{protocol}/{pid}: liver IoU differs')
             require(np.isclose(pp.loc[pid, 'miou'], miou, atol=1e-10, rtol=0), f'{protocol}/{pid}: mIoU differs')
-            dice = 2*tp / (2*tp+fp+fn) if 2*tp+fp+fn else 1.0
+            dice = 2*tp / (2*tp+fp+fn) if 2*tp+fp+fn else 0.0
             require(np.isclose(pp.loc[pid, 'dice'], dice, atol=1e-10, rtol=0), f'{protocol}/{pid}: Dice differs')
             scores.append((liver, miou, dice))
         values = np.asarray(scores)
         for col, metric in enumerate(['iou_liver', 'miou', 'dice']):
             require(np.isclose(values[:, col].mean(), summary['C1'][metric]['mean'], atol=1e-12, rtol=0), f'{protocol}: mean {metric} differs')
-            require(np.isclose(values[:, col].std(), summary['C1'][metric]['std'], atol=1e-12, rtol=0), f'{protocol}: SD {metric} differs')
+            require(np.isclose(values[:, col].std(ddof=1), summary['C1'][metric]['std'], atol=1e-12, rtol=0), f'{protocol}: SD {metric} differs')
         result['protocols'][protocol] = dict(confusion_counts_match=True, mean_liver_iou=float(values[:, 0].mean()), mean_iou=float(values[:, 1].mean()), mean_dice=float(values[:, 2].mean()))
     (reports / 'integrity_check.json').write_text(json.dumps(result, indent=2) + '\n')
     print(json.dumps(result, indent=2), flush=True)

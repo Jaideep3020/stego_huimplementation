@@ -1,10 +1,10 @@
 data: DATASET/CHAOS_Train_Sets/Train_Sets/CT
 pipeline:
-  tmin: 50
-  tmax: 200
-  med_k: 3
-  open_k: 5
-  close_k: 5
+  tmin: 40
+  tmax: 180
+  med_k: 0
+  open_k: 0
+  close_k: 7
   order: fig3
   connectivity: 2
   shape: disk

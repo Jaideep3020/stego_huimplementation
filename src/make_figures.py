@@ -26,17 +26,17 @@ def fig3(reports='reports'):
     indices = positive[np.rint(np.linspace(0,len(positive)-1,5)).astype(int)]
     cfg = yaml.safe_load(Path('configs/paper_protocol.yaml').read_text())['pipeline']
     fig, axes = plt.subplots(6,5,figsize=(13,15))
-    labels = ['(a) CT (−100 to 300 HU)','(b) Ground truth','(c) Threshold','(d) Opening','(e) Largest component','(f) Closing']
+    labels = ['(a) CT (−150 to 250 HU)','(b) Ground truth','(c) Threshold [40,180]','(d) Opening','(e) Largest component','(f) Closing (disk r=3)']
     for col, idx in enumerate(indices):
         s = stages(hu[idx], **cfg)
         images = [hu[idx],gt[idx],s['threshold'],s['opening'],s['largest_cc'],s['final']]
         for row,image in enumerate(images):
             ax=axes[row,col]
-            ax.imshow(image,cmap='gray',vmin=-100 if row==0 else 0,vmax=300 if row==0 else 1)
+            ax.imshow(image,cmap='gray',vmin=-150 if row==0 else 0,vmax=250 if row==0 else 1)
             ax.set_xticks([]); ax.set_yticks([])
             if col==0: ax.set_ylabel(labels[row],fontsize=10)
             if row==0: ax.set_title(f'CT {pid}, slice {idx}')
-    fig.suptitle('Fixed 50–200 HU protocol: five slices spanning the liver\nCase selected by median per-patient Dice',fontsize=15)
+    fig.suptitle('Adapted 40–180 HU protocol: five slices spanning the liver\nCase selected by median per-patient Dice',fontsize=15)
     fig.tight_layout(rect=(0,0,1,.96))
     fig.savefig(out / 'fig3_replica.png',dpi=130)
     plt.close(fig)

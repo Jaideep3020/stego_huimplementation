@@ -83,7 +83,7 @@ def evaluate_patient(task):
 
 
 def describe(table, metrics):
-    return {k: dict(mean=float(table[k].mean()), std=float(table[k].std(ddof=0)), n=int(table[k].notna().sum())) for k in metrics}
+    return {k: dict(mean=float(table[k].mean()), std=float(table[k].std(ddof=1)), n=int(table[k].notna().sum())) for k in metrics}
 
 
 def aggregate(per_patient, per_slice):
@@ -94,9 +94,9 @@ def aggregate(per_patient, per_slice):
                 C3=describe(per_slice[per_slice.gt_voxels > 0], METRICS),
                 C4=from_confusion(*map(int, totals)),
                 patients=len(per_patient), slices=len(per_slice),
-                conventions={'headline': 'C1: per-patient whole-volume scores, then mean over patients',
-                             'std': 'Population SD (ddof=0); patient SD in C1, slice SD in C2/C3',
-                             'C2': 'All slices; empty/empty Dice and IoU = 1',
+                conventions={'headline': 'C1: per-patient whole-volume scores (pooled TP/FP/FN), then mean over patients',
+                             'std': 'Sample SD (ddof=1); patient SD in C1, slice SD in C2/C3',
+                             'C2': 'All slices; empty/empty Dice and IoU = 0',
                              'C3': 'GT-positive slices only', 'C4': 'Pooled voxel counts',
                              'units': 'Fractions in CSV/JSON; percent in the report',
                              'miou': 'Arithmetic mean of liver IoU and background IoU'})

@@ -54,7 +54,7 @@ class PipelineTests(unittest.TestCase):
             with self.assertRaises(ValueError): segment_slice(np.zeros((20,20)),**kw)
 
     def test_threshold_endpoints(self):
-        hu=np.array([[49,50,200,201]],np.float32)
+        hu=np.array([[39,40,180,181]],np.float32)
         p=segment_slice(hu,med_k=1,open_k=1,close_k=1,use_lcc=False)
         np.testing.assert_array_equal(p,[[False,True,True,False]])
 

@@ -42,7 +42,7 @@ def export_patient(task):
         name = f'slice_{index:04d}.png'
         Image.fromarray(prediction.astype(np.uint8)*255).save(target/'masks'/name)
         Image.fromarray(ground_truth.astype(np.uint8)*255).save(target/'ground_truth'/name)
-        display = np.rint(np.clip((hu[index]+100)/400, 0, 1)*255).astype(np.uint8)
+        display = np.rint(np.clip((hu[index]+150)/400, 0, 1)*255).astype(np.uint8)
         display[~prediction] = 0
         Image.fromarray(display).save(target/'segmented_ct'/name)
         if not np.array_equal(np.asarray(Image.open(target/'masks'/name)) == 255, prediction):
@@ -57,7 +57,7 @@ def export_patient(task):
     write_json(target/'metadata.json', dict(patient=pid, method='paper_protocol', parameters=cfg,
                shape=list(gt.shape), axis_order=['slice', 'row', 'column'],
                mask_png_values={'background': 0, 'predicted_liver': 255},
-               segmented_ct_display_window_hu=[-100, 300], segmented_ct_is_display_only=True,
+               segmented_ct_display_window_hu=[-150, 250], segmented_ct_is_display_only=True,
                pixel_spacing_mm=meta['pixel_spacing_mm'], z_spacing_mm=meta['z_spacing_mm'],
                source_sha256=meta['source_sha256'], gt_reversed=meta['gt_reversed'],
                alignment_override=meta.get('alignment_override')))
@@ -84,8 +84,8 @@ def comparison(pid, reports, out, indices=None, filename=None):
     for row, index in enumerate(indices):
         prediction = masks[index]
         for col, image in enumerate([hu[index], gt[index], prediction]):
-            axes[row, col].imshow(image, cmap='gray', vmin=-100 if col==0 else 0, vmax=300 if col==0 else 1)
-        axes[row, 3].imshow(hu[index], cmap='gray', vmin=-100, vmax=300)
+            axes[row, col].imshow(image, cmap='gray', vmin=-150 if col==0 else 0, vmax=250 if col==0 else 1)
+        axes[row, 3].imshow(hu[index], cmap='gray', vmin=-150, vmax=250)
         error = np.zeros((*gt[index].shape, 4))
         error[prediction & gt[index]] = [0, 1, 0, .6]
         error[prediction & ~gt[index]] = [1, 0, 0, .6]
@@ -136,7 +136,7 @@ One fixed 50–200 HU pipeline is applied to every CT patient.
 
 - CT_<patient>/masks/: predicted 0/255 PNG masks for every slice.
 - CT_<patient>/ground_truth/: matched reference masks, 0/255.
-- CT_<patient>/segmented_ct/: CT display pixels inside the predicted mask. Display window -100 to 300 HU; these are not quantitative HU images.
+- CT_<patient>/segmented_ct/: CT display pixels inside the predicted mask. Display window -150 to 250 HU; these are not quantitative HU images.
 - mask_volume.npz: boolean `mask` array indexed [slice, row, column].
 - slice_map.csv: original DICOM/GT filenames for every output. metadata.json: parameters, spacing and fingerprint.
 - comparisons/: five slices spanning each patient's GT-positive range, showing original CT, GT, prediction and errors.

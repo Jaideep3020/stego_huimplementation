@@ -58,7 +58,7 @@ def alignment_sensitivity(reports='reports'):
         for col, index in enumerate(indices):
             for row, masks in enumerate([forward, forward[::-1]]):
                 ax = axes[row, col]
-                ax.imshow(hu[index], cmap='gray', vmin=-100, vmax=300)
+                ax.imshow(hu[index], cmap='gray', vmin=-150, vmax=250)
                 if masks[index].any():
                     ax.contour(masks[index], levels=[.5], colors='lime', linewidths=1)
                 ax.set_title(f'{"Forward" if row==0 else "Reversed"} GT; slice {index}')
