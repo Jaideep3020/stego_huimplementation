@@ -20,8 +20,10 @@ class MetricsTests(unittest.TestCase):
         self.assertEqual(scores(a,a)['miou'], 1)
         self.assertEqual(scores(a,~a)['dice'], 0)
         z = np.zeros_like(a)
-        self.assertEqual(scores(z,z)['dice'], 1)
-        self.assertEqual(scores(z,z)['miou'], 1)
+        self.assertEqual(scores(z,z)['dice'], 0)
+        self.assertEqual(scores(z,z)['iou_liver'], 0)
+        self.assertEqual(scores(z,z)['iou_bg'], 1)
+        self.assertEqual(scores(z,z)['miou'], 0.5)
 
     def test_shape_mismatch(self):
         with self.assertRaises(ValueError):

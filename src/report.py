@@ -20,7 +20,7 @@ def run(reports='reports'):
         value = summary['C1'][key]
         lines.append(f'| {label} | {100*value["mean"]:.4f} | {100*value["std"]:.4f} |')
     lines += ['', 'Each patient is scored over its complete volume, then patient scores are averaged equally. SD uses ddof=1 (sample SD). CSV/JSON values are fractions; this report uses percent.', '',
-              '**Dice** = 2TP/(2TP+FP+FN). **mIoU** = [TP/(TP+FP+FN) + TN/(TN+FP+FN)]/2. Empty/empty class scores are 1. Liver/background IoU components and confusion counts are retained in the CSVs to audit mIoU.', '',
+              '**Dice** = 2TP/(2TP+FP+FN). **mIoU** = [TP/(TP+FP+FN) + TN/(TN+FP+FN)]/2. Empty/empty class scores are 0. Liver/background IoU components and confusion counts are retained in the CSVs to audit mIoU.', '',
               '## Method: HU-Only Adaptation Borrowing P1 Parameters', '',
               '> **Note**: This is an HU-only adaptation borrowing selected morphological and threshold parameters from P1—it is **not** an equivalent implementation of P1.', '',
               '> P1 predicts clusters from learned BiomedCLIP embeddings, selects a liver cluster via N2 naming, and refines probability maps using guided filtering. In contrast, this pipeline operates strictly via direct HU intensity thresholding.', '',

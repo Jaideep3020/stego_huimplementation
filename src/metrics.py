@@ -13,8 +13,8 @@ def confusion(prediction, ground_truth):
     return tp, predicted-tp, actual-tp, int(p.size-predicted-actual+tp)
 
 
-def from_confusion(tp, fp, fn, tn, empty_value=1.0):
-    """Return fractional scores; an empty class in both masks scores 1."""
+def from_confusion(tp, fp, fn, tn, empty_value=0.0):
+    """Return fractional scores; an empty class in both masks scores 0.0."""
     dice_denominator = 2*tp + fp + fn
     liver_denominator = tp + fp + fn
     background_denominator = tn + fp + fn
@@ -24,5 +24,5 @@ def from_confusion(tp, fp, fn, tn, empty_value=1.0):
     return dict(dice=dice, miou=(liver+background)/2, iou_liver=liver, iou_bg=background)
 
 
-def scores(prediction, ground_truth, empty_value=1.0):
+def scores(prediction, ground_truth, empty_value=0.0):
     return from_confusion(*confusion(prediction, ground_truth), empty_value)
