@@ -96,7 +96,7 @@ def aggregate(per_patient, per_slice):
                 patients=len(per_patient), slices=len(per_slice),
                 conventions={'headline': 'C1: per-patient whole-volume scores (pooled TP/FP/FN), then mean over patients',
                              'std': 'Sample SD (ddof=1); patient SD in C1, slice SD in C2/C3',
-                             'C2': 'All slices; empty/empty Dice and IoU = 0',
+                             'C2': 'All slices; empty/empty Dice and IoU = 1',
                              'C3': 'GT-positive slices only', 'C4': 'Pooled voxel counts',
                              'units': 'Fractions in CSV/JSON; percent in the report',
                              'miou': 'Arithmetic mean of liver IoU and background IoU'})
