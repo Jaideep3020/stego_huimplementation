@@ -1,8 +1,8 @@
 {
-  "seconds": 7.49621604099957,
+  "seconds": 5.7604624169998715,
   "versions": {
     "python": "3.14.5",
-    "opencv_runtime": "5.0.0",
+    "opencv_runtime": "5.1.0",
     "numpy": "2.5.2",
     "scipy": "1.18.1",
     "scikit-image": "0.26.0",

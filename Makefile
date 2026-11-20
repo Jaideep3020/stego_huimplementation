@@ -4,7 +4,7 @@ export MPLCONFIGDIR := /tmp/liver-hu-matplotlib
 export OPENBLAS_NUM_THREADS := 1
 export OMP_NUM_THREADS := 1
 
-.PHONY: all audit test evaluate figures diagnostics visualization export integrity verify report
+.PHONY: all audit test evaluate figures diagnostics visualization github-gallery export integrity verify report
 all:
 	$(MAKE) audit
 	$(MAKE) test
@@ -33,6 +33,9 @@ figures:
 
 visualization:
 	$(PYTHON) -m src.export_segmentations --out visualization --no-archive --workers $(WORKERS)
+
+github-gallery:
+	$(PYTHON) -m src.export_github_gallery
 
 export:
 	$(PYTHON) -m src.export_segmentations --out visualization --workers $(WORKERS)

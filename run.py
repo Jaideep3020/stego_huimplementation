@@ -14,6 +14,7 @@ PHASES = {
     'diagnostics': 'src.diagnostics',
     'figures': 'src.make_figures',
     'visualization': 'src.export_segmentations',
+    'github-gallery': 'src.export_github_gallery',
     'integrity': 'src.check_integrity',
     'verify': 'src.verify',
     'report': 'src.report',
