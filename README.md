@@ -18,6 +18,8 @@ These are measured results from this implementation, not the paper's reported va
 
 **Start here on GitHub:** open the dedicated [visualization gallery](visualization_gallery/README.md). It shows all 15 overlays inline, provides a patient jump table, and links to the complete evaluation matrices. Its files are grouped in one top-level folder for straightforward browsing. The original [curated artifact bundle](visualization/github/README.md) remains available with the complete file inventory and dataset attribution. The broader [reproduction report](reports/REPRODUCTION_REPORT.md) includes patient-level results and method limitations.
 
+Read [the results analysis](docs/RESULTS_ANALYSIS.md) for cohort distribution, low- and high-performing cases, pooled versus equal-patient aggregation, visual-review guidance, and the limits of this fixed HU method.
+
 ### How to inspect the evaluation
 
 1. Open `visualization/github/evaluation/summary.json` for cohort means, standard deviations, sample counts, and the definitions of each aggregation.
