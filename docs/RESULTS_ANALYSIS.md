@@ -1,53 +1,46 @@
-# Results and analysis
+# Results Analysis
 
-## Scope
+## Cohort and configuration
 
-This analysis summarizes the fixed HU threshold pipeline on all 20 labelled CHAOS CT training-set patients (2,874 slices). Each patient's complete volume is scored first; the headline result is the equal-patient mean. The source tables are [the per-patient matrix](../visualization/github/evaluation/per_patient.csv), [the per-slice matrix](../visualization/github/evaluation/per_slice.csv), and [the aggregation summary](../visualization/github/evaluation/summary.json).
+This analysis covers all 20 labelled CHAOS CT training-set patients and 2,874 slices. The fixed pipeline uses an inclusive 40–180 HU threshold, no median filter, no opening, largest 8-connected component selection, and 7×7 disk closing. Each slice is processed independently.
 
-The method uses one unmodified configuration for every case: HU conversion, 3×3 median filtering, an inclusive 50–200 HU range, 5×5 disk opening, largest 8-connected component selection, and 5×5 disk closing. It processes each CT slice independently. There is no parameter tuning, learned model, or manual mask correction.
+The evidence files are the [per-patient matrix](../visualization/github/evaluation/per_patient.csv), [per-slice matrix](../visualization/github/evaluation/per_slice.csv), and [summary](../visualization/github/evaluation/summary.json).
 
 ## Headline results
 
-| Metric | Equal-patient mean | Population SD | Median | Range |
+The primary result computes metrics for each patient’s complete volume and then averages the 20 patient scores equally.
+
+| Metric | Mean | Sample SD | Median | Range |
 |---|---:|---:|---:|---:|
-| Dice | 71.25% | 19.17 points | 73.56% | 6.46%–92.16% |
-| Liver IoU | 58.21% | 19.68 points | 58.18% | 3.34%–85.46% |
-| Background IoU | 94.27% | 4.42 points | 96.21% | 82.10%–99.06% |
-| Two-class mIoU | 76.24% | 11.91 points | 77.26% | 42.72%–92.26% |
+| Dice | 56.92% | 17.69 points | 58.49% | 4.10%–82.58% |
+| Liver IoU | 41.64% | 16.04 points | 41.36% | 2.09%–70.32% |
+| Background IoU | 89.31% | 5.97 points | 90.30% | 75.00%–97.68% |
+| Two-class mIoU | 65.47% | 10.79 points | 65.60% | 38.54%–84.00% |
 
-Dice is the overlap of the predicted and reference liver masks. Liver IoU measures liver overlap only. Background IoU measures agreement on non-liver pixels. Two-class mIoU is the arithmetic mean of liver IoU and background IoU.
-
-The pooled-voxel result is lower than the equal-patient headline: Dice 69.54%, liver IoU 53.30%, background IoU 94.63%, and mIoU 73.97%. These are different aggregation conventions: pooled voxels give larger scans more weight, whereas the headline gives each patient equal weight. They should not be mixed in comparisons.
+The pooled-voxel calculation is lower: Dice 53.94%, liver IoU 36.93%, background IoU 89.65%, and mIoU 63.29%. Pooled results weight larger scans more heavily; the headline treats every patient equally.
 
 ## Interpretation
 
-The method performs strongly for some cases: 8 of 20 patients have Dice at or above 80%, and the best case, CT 2, reaches 92.16% Dice and 92.26% mIoU. The high background IoU across the cohort reflects that non-liver pixels make up most CT pixels.
+The performance range is wide. CT 2 is the strongest case with 82.58% Dice and 84.00% mIoU. CT 14 is the weakest case with 4.10% Dice and 38.54% mIoU. Ten of 20 patients score below 60% Dice, while one patient reaches 80% Dice.
 
-Liver segmentation is the harder part. Liver IoU is consistently lower than background IoU and drives the variation in Dice and mIoU. Four cases have Dice below 60%. CT 14 is the main failure case at 6.46% Dice and 3.34% liver IoU. The saved overlays make this visible rather than hiding it behind the cohort mean.
+Background IoU is much higher than liver IoU throughout the cohort. This means the threshold rule identifies non-liver pixels more reliably than it isolates liver tissue. In lower-performing cases, false positives are a recurring pattern: nearby tissues can share HU values inside the fixed threshold interval.
 
-The low-performing cases also show that excess predicted area is a recurring error mode. CT 24 has 49.73% Dice despite only 6,617 false-negative pixels because it contains 3,853,108 false-positive pixels. CT 19, CT 23, and CT 29 similarly have many more false positives than false negatives. This is consistent with a fixed HU band selecting non-liver tissues with similar attenuation. These observations identify limitations of this rule-based method; they do not establish a clinical failure mode.
+The [visualization gallery](../visualization_gallery/README.md) shows this range directly. Its 15 cases are selected at evenly spaced positions after ranking all 20 patients by Dice, so it includes low, middle, and high outcomes rather than hand-picked favorable examples.
 
-## Visual review
+## Interpretation limits
 
-Open the [visualization gallery](../visualization_gallery/README.md) to inspect the 15 selected cases directly in GitHub. The cases are selected from evenly spaced ranks after sorting all 20 patients by Dice, so the gallery contains low, middle, and high scoring examples rather than only favorable images.
-
-Each comparison image contains five slices. Columns show the CT image, reference mask, prediction, contour overlay, and pixel-wise error map. Green means correctly predicted liver, red means false positive, blue means missed liver, and yellow in the contour panel means coincident reference and predicted boundaries. The CT display window is −100 to 300 HU and does not alter segmentation or scoring.
-
-## Limitations
-
-- The data are the labelled CHAOS CT training-set patients; the separate CHAOS test download is not evaluated here.
-- The method is a 2D fixed-threshold rule. It uses no 3D context, learned appearance model, or case-specific tuning.
-- The paper does not fully specify several implementation choices, including morphology details and aggregation. The chosen settings are recorded in [`configs/paper_protocol.yaml`](../configs/paper_protocol.yaml) and explained in [the reproduction gaps](REPRODUCTION_GAPS.md).
-- These metrics describe agreement with the available reference masks in this cohort. They are research results, not clinical validation.
+- The evaluation uses the labelled CHAOS CT training-set cohort, not the separate CHAOS test download.
+- The pipeline has no learned model, 3D context, or case-specific adjustment.
+- The paper does not specify every morphology and aggregation detail; the recorded choices are in [`configs/paper_protocol.yaml`](../configs/paper_protocol.yaml) and [the reproduction gaps](REPRODUCTION_GAPS.md).
+- Metrics describe agreement with the available reference masks in this dataset. They do not establish clinical performance.
 
 ## Reproduce
 
-From the repository root, run:
+Run from the repository root after placing the CT data at `DATASET/CHAOS_Train_Sets/Train_Sets/CT`:
 
 ```sh
 python run.py evaluate --workers 6
 python run.py report
 python run.py visualization --workers 6
+python -m src.export_github_gallery
 ```
-
-The input path is `DATASET/CHAOS_Train_Sets/Train_Sets/CT`. The complete workflow is documented in the [README](../README.md).
