@@ -24,3 +24,22 @@ venv/
 .env.*
 !.env.example
 kaggle.json
+
+# Curated, attributed evaluation bundle for repository distribution.
+!visualization/
+visualization/*
+!visualization/github/
+visualization/github/*
+!visualization/github/README.md
+!visualization/github/selection.json
+!visualization/github/cases/
+visualization/github/cases/*
+!visualization/github/cases/CT_*/
+visualization/github/cases/CT_*/*
+!visualization/github/cases/CT_*/comparison.png
+!visualization/github/cases/CT_*/metrics.json
+!visualization/github/cases/CT_*/predicted_mask_volume.npz
+!visualization/github/evaluation/
+!visualization/github/evaluation/*.csv
+!visualization/github/evaluation/*.json
+!visualization/github/evaluation/*.yaml

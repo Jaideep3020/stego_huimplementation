@@ -1,0 +1,95 @@
+{
+  "selection_method": "15 evenly spaced ranks from all 20 patients sorted by patient-volume Dice; includes lower and upper extremes",
+  "selected_cases": [
+    {
+      "patient": "14",
+      "dice": 0.0645525109865,
+      "miou": 0.42716952885,
+      "dice_rank_1_low_20_high": 1
+    },
+    {
+      "patient": "24",
+      "dice": 0.497254959783,
+      "miou": 0.601830372847,
+      "dice_rank_1_low_20_high": 2
+    },
+    {
+      "patient": "19",
+      "dice": 0.588557489727,
+      "miou": 0.644355656187,
+      "dice_rank_1_low_20_high": 4
+    },
+    {
+      "patient": "23",
+      "dice": 0.612682460203,
+      "miou": 0.685809389334,
+      "dice_rank_1_low_20_high": 5
+    },
+    {
+      "patient": "16",
+      "dice": 0.651203458346,
+      "miou": 0.701860102472,
+      "dice_rank_1_low_20_high": 6
+    },
+    {
+      "patient": "6",
+      "dice": 0.706137361269,
+      "miou": 0.723838591218,
+      "dice_rank_1_low_20_high": 8
+    },
+    {
+      "patient": "30",
+      "dice": 0.726848547503,
+      "miou": 0.770168339335,
+      "dice_rank_1_low_20_high": 9
+    },
+    {
+      "patient": "8",
+      "dice": 0.742828020288,
+      "miou": 0.775035934462,
+      "dice_rank_1_low_20_high": 11
+    },
+    {
+      "patient": "26",
+      "dice": 0.793703417033,
+      "miou": 0.811436779787,
+      "dice_rank_1_low_20_high": 12
+    },
+    {
+      "patient": "25",
+      "dice": 0.80874438683,
+      "miou": 0.824280294523,
+      "dice_rank_1_low_20_high": 13
+    },
+    {
+      "patient": "22",
+      "dice": 0.833285092451,
+      "miou": 0.844516716612,
+      "dice_rank_1_low_20_high": 15
+    },
+    {
+      "patient": "18",
+      "dice": 0.870424942811,
+      "miou": 0.872354912448,
+      "dice_rank_1_low_20_high": 16
+    },
+    {
+      "patient": "1",
+      "dice": 0.879998903472,
+      "miou": 0.881145454576,
+      "dice_rank_1_low_20_high": 17
+    },
+    {
+      "patient": "5",
+      "dice": 0.903681304896,
+      "miou": 0.902521322949,
+      "dice_rank_1_low_20_high": 19
+    },
+    {
+      "patient": "2",
+      "dice": 0.921625040954,
+      "miou": 0.922644302335,
+      "dice_rank_1_low_20_high": 20
+    }
+  ]
+}

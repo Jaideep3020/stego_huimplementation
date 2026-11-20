@@ -7,14 +7,58 @@ A structured implementation of the HU-based liver segmentation method described 
 The project applies **one fixed paper-method configuration** to all **20 labelled local CT patients and 2,874 slices**. The requested outputs are **Dice, mIoU, and patient segmentation visualizations**. MRI is excluded. Parameters are not tuned.
 
 
-## Measured results
+## Evaluation results
 
 | Metric | Mean over 20 complete patient volumes |
 |---|---:|
 | Dice | **71.25%** |
 | mIoU, liver + background | **76.24%** |
 
-These are measured results from this implementation, not the paper's reported values. mIoU includes liver and background; its component IoUs and confusion counts are saved for inspection. See [the results report](reports/REPRODUCTION_REPORT.md) and [per-patient CSV](reports/paper_protocol/per_patient.csv).
+These are measured results from this implementation, not the paper's reported values. Each patient's complete 3D volume is scored first, then the 20 patient scores are averaged equally (population SD). MRI is excluded. The reported mIoU is the mean of liver IoU and background IoU.
+
+**Start here on GitHub:** open the dedicated [visualization gallery](visualization_gallery/README.md). It shows all 15 overlays inline, provides a patient jump table, and links to the complete evaluation matrices. Its files are grouped in one top-level folder for straightforward browsing. The original [curated artifact bundle](visualization/github/README.md) remains available with the complete file inventory and dataset attribution. The broader [reproduction report](reports/REPRODUCTION_REPORT.md) includes patient-level results and method limitations.
+
+### How to inspect the evaluation
+
+1. Open `visualization/github/evaluation/summary.json` for cohort means, standard deviations, sample counts, and the definitions of each aggregation.
+2. Open `per_patient.csv` to compare the 20 whole-volume patient scores. Each row includes slice count, TP/FP/FN/TN, Dice, liver IoU, background IoU, and mIoU.
+3. Open `per_slice.csv` for the corresponding measurements on every one of the 2,874 slices. CSV scores are fractions; multiply by 100 for percentages.
+4. For a patient case, open `visualization/github/cases/CT_<id>/comparison.png`. The five rows show representative GT-positive slices; columns show CT, ground truth, prediction, aligned contours, and error overlay. Green marks correct liver, red false positive, blue missed liver, and yellow overlapping contours.
+5. The same case folder has `metrics.json` with that patient's full-volume counts and scores and `predicted_mask_volume.npz` with all predicted slices. The NPZ contains predictions only; source DICOMs and ground-truth masks are not included in the curated bundle.
+
+The 15 displayed patients are selected by evenly spaced ranks after sorting all 20 by whole-volume Dice, so the examples span the observed score range. See [the bundle guide](visualization/github/README.md) for the artifact inventory, attribution, and license notes.
+
+### Browse the example visualizations on GitHub
+
+Open the [15-case gallery folder](visualization/github/cases/) in GitHub and select a patient folder, then click `comparison.png` to view the overlay. The image has five representative liver-positive slices. Read each row from left to right: CT image, ground-truth mask, predicted mask, contours, and error map. In the contour panel, green is the reference boundary, red is the predicted boundary, and yellow is where they overlap. In the error panel, green pixels are correctly predicted liver, red pixels are false positives, and blue pixels are missed liver. The CT display window is −100 to 300 HU and affects display only.
+
+The examples are chosen by evenly spaced ranks across patient-volume Dice, not hand-picked visual quality. This includes poor, middle, and strong cases; see [`selection.json`](visualization/github/selection.json) for the exact selected patient IDs and scores. The 15 examples are illustrations; the matrices still cover all 20 patients.
+
+| Patient | Dice | mIoU | Overlay |
+|---:|---:|---:|---|
+| 14 | 6.46% | 42.72% | [View comparison](visualization/github/cases/CT_14/comparison.png) |
+| 24 | 49.73% | 60.18% | [View comparison](visualization/github/cases/CT_24/comparison.png) |
+| 19 | 58.86% | 64.44% | [View comparison](visualization/github/cases/CT_19/comparison.png) |
+| 23 | 61.27% | 68.58% | [View comparison](visualization/github/cases/CT_23/comparison.png) |
+| 16 | 65.12% | 70.19% | [View comparison](visualization/github/cases/CT_16/comparison.png) |
+| 6 | 70.61% | 72.38% | [View comparison](visualization/github/cases/CT_6/comparison.png) |
+| 30 | 72.68% | 77.02% | [View comparison](visualization/github/cases/CT_30/comparison.png) |
+| 8 | 74.28% | 77.50% | [View comparison](visualization/github/cases/CT_8/comparison.png) |
+| 26 | 79.37% | 81.14% | [View comparison](visualization/github/cases/CT_26/comparison.png) |
+| 25 | 80.87% | 82.43% | [View comparison](visualization/github/cases/CT_25/comparison.png) |
+| 22 | 83.33% | 84.45% | [View comparison](visualization/github/cases/CT_22/comparison.png) |
+| 18 | 87.04% | 87.24% | [View comparison](visualization/github/cases/CT_18/comparison.png) |
+| 1 | 88.00% | 88.11% | [View comparison](visualization/github/cases/CT_1/comparison.png) |
+| 5 | 90.37% | 90.25% | [View comparison](visualization/github/cases/CT_5/comparison.png) |
+| 2 | 92.16% | 92.26% | [View comparison](visualization/github/cases/CT_2/comparison.png) |
+
+### Segmentation and scoring techniques
+
+The implementation processes each CT slice independently. It converts stored pixel values to Hounsfield Units (HU), applies a 3×3 median filter, selects the inclusive 50–200 HU range, performs 5×5 disk opening, keeps the largest 8-connected component, then performs 5×5 disk closing. The fixed settings are in [`configs/paper_protocol.yaml`](configs/paper_protocol.yaml); the [paper method mapping](docs/PAPER_IMPLEMENTATION_MAP.md) and [reproduction gaps](docs/REPRODUCTION_GAPS.md) explain choices the paper leaves unspecified. No parameter search or manual mask correction is used.
+
+Dice measures overlap of the liver masks. Liver IoU measures liver intersection over union; background IoU measures the same for non-liver pixels; mIoU is the arithmetic mean of the two class IoUs. Scores in CSV and JSON files are fractions, while the README and figures show percentages. Headline metrics score each patient's entire volume before averaging the 20 patient scores equally. The summary file also reports slice-averaged and pooled alternatives; keep these aggregation conventions distinct when comparing numbers.
+
+For local regeneration, follow the [run instructions](#run) and use `python run.py evaluate --workers 6`, `python run.py report`, and `python run.py visualization --workers 6`. These commands use the labelled CT training-set data in `DATASET/CHAOS_Train_Sets/Train_Sets/CT`; they do not use the separate test download. The curated GitHub gallery remains under `visualization/github/`.
 
 
 ## Method
@@ -73,7 +117,7 @@ python -m pip install -r requirements.txt
 python run.py all --workers 6
 ```
 
-The two commands above assume the virtual environment is active. Alternatively use the explicit environment interpreter paths from [the cross-platform setup guide](docs/CLONE_AND_RUN.md). `git clone` supplies the implementation and compact results; the CT dataset and generated images are not stored in Git.
+The two commands above assume the virtual environment is active. Alternatively use the explicit environment interpreter paths from [the cross-platform setup guide](docs/CLONE_AND_RUN.md). `git clone` supplies the implementation, evaluation tables, and curated visualization package; the full CT dataset and complete local export are not stored in Git.
 
 ## Run
 
@@ -86,7 +130,7 @@ python -m pip install -r requirements.txt
 make all WORKERS=6
 ```
 
-Existing input is `DATASET/CHAOS_Train_Sets/Train_Sets/CT`. No download is needed. Each phase can also run separately:
+The moved local input is `DATASET/CHAOS_Train_Sets/Train_Sets/CT`; the separate test download is `DATASET/CHAOS_Test_Sets/Test_Sets/CT`. Current evaluation uses the 20 labelled CT patients from the CHAOS training download; it does not use the separate CHAOS test download. No download is needed on this machine. Each phase can also run separately:
 
 ```sh
 make audit           # CT/GT files, HU tags, counts, labels, ordering and fingerprints
@@ -100,6 +144,8 @@ make verify          # Byte-identical repeated evaluation
 make report          # Results report
 make export          # Visualization folder plus visualization.zip
 ```
+
+To regenerate just the complete evaluation tables and report, run `python run.py evaluate --workers 6` followed by `python run.py report`. To regenerate patient overlays and masks, run `python run.py visualization --workers 6`; this writes the local `visualization/` export. The curated 15-case GitHub bundle is maintained separately under `visualization/github/` so regeneration of the full local export does not define which examples are selected for publication. `python run.py all --workers 6` runs the full audit, tests, evaluation, figures, export, integrity checks, verification, and report.
 
 For different input, set `data` in `configs/paper_protocol.yaml` and use `make all`, or run `python3 -m src.io_chaos --data /path/to/CT` before evaluation. Do not run the audit while experiments are active. Changing source files invalidates affected cached median volumes; changing the median implementation itself requires removing its cached `*_med*.npy` files.
 

@@ -1,0 +1,85 @@
+{
+  "C1": {
+    "dice": {
+      "mean": 0.7124826033405671,
+      "std": 0.19167320226550347,
+      "n": 20
+    },
+    "miou": {
+      "mean": 0.762386753387092,
+      "std": 0.1190597473532324,
+      "n": 20
+    },
+    "iou_liver": {
+      "mean": 0.5820652364577313,
+      "std": 0.19679778568620696,
+      "n": 20
+    },
+    "iou_bg": {
+      "mean": 0.942708270316453,
+      "std": 0.04419718652676231,
+      "n": 20
+    }
+  },
+  "C2": {
+    "dice": {
+      "mean": 0.5391594684667839,
+      "std": 0.399769887454834,
+      "n": 2874
+    },
+    "miou": {
+      "mean": 0.707794226964448,
+      "std": 0.19653705240107525,
+      "n": 2874
+    },
+    "iou_liver": {
+      "mean": 0.4693104350947367,
+      "std": 0.36972970535993926,
+      "n": 2874
+    },
+    "iou_bg": {
+      "mean": 0.9462780188341594,
+      "std": 0.051997294250510175,
+      "n": 2874
+    }
+  },
+  "C3": {
+    "dice": {
+      "mean": 0.6619155541962994,
+      "std": 0.3390409640384187,
+      "n": 2341
+    },
+    "miou": {
+      "mean": 0.7597144643222208,
+      "std": 0.1812430471445607,
+      "n": 2341
+    },
+    "iou_liver": {
+      "mean": 0.5761632594883697,
+      "std": 0.3259744121349515,
+      "n": 2341
+    },
+    "iou_bg": {
+      "mean": 0.943265669156072,
+      "std": 0.05588734550048955,
+      "n": 2341
+    }
+  },
+  "C4": {
+    "dice": 0.695392978532559,
+    "miou": 0.7396733550261059,
+    "iou_liver": 0.5330286953004214,
+    "iou_bg": 0.9463180147517902
+  },
+  "patients": 20,
+  "slices": 2874,
+  "conventions": {
+    "headline": "C1: per-patient whole-volume scores, then mean over patients",
+    "std": "Population SD (ddof=0); patient SD in C1, slice SD in C2/C3",
+    "C2": "All slices; empty/empty Dice and IoU = 1",
+    "C3": "GT-positive slices only",
+    "C4": "Pooled voxel counts",
+    "units": "Fractions in CSV/JSON; percent in the report",
+    "miou": "Arithmetic mean of liver IoU and background IoU"
+  }
+}
