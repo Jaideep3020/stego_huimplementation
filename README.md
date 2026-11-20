@@ -20,6 +20,34 @@ These are measured results from this implementation, not the paper's reported va
 
 Read [the results analysis](docs/RESULTS_ANALYSIS.md) for cohort distribution, low- and high-performing cases, pooled versus equal-patient aggregation, visual-review guidance, and the limits of this fixed HU method.
 
+### Complete patient-level evaluation
+
+All scores below are whole-volume results for each patient. Values are percentages; the source CSV also retains TP, FP, FN, and TN counts. The **mean** row gives every patient equal weight. For slice-level and pooled alternatives, see the [summary file](visualization/github/evaluation/summary.json).
+
+| Patient | Slices | Dice | Liver IoU | Background IoU | mIoU |
+|---:|---:|---:|---:|---:|---:|
+| 1 | 96 | 88.00% | 78.57% | 97.66% | 88.11% |
+| 2 | 81 | 92.16% | 85.46% | 99.06% | 92.26% |
+| 5 | 95 | 90.37% | 82.43% | 98.08% | 90.25% |
+| 6 | 88 | 70.61% | 54.58% | 90.19% | 72.38% |
+| 8 | 123 | 74.28% | 59.09% | 95.92% | 77.50% |
+| 10 | 110 | 88.72% | 79.72% | 98.03% | 88.88% |
+| 14 | 95 | 6.46% | 3.34% | 82.10% | 42.72% |
+| 16 | 91 | 65.12% | 48.28% | 92.09% | 70.19% |
+| 18 | 111 | 87.04% | 77.06% | 97.41% | 87.24% |
+| 19 | 90 | 58.86% | 41.70% | 87.17% | 64.44% |
+| 21 | 257 | 81.49% | 68.76% | 97.72% | 83.24% |
+| 22 | 101 | 83.33% | 71.42% | 97.48% | 84.45% |
+| 23 | 240 | 61.27% | 44.16% | 93.00% | 68.58% |
+| 24 | 123 | 49.73% | 33.09% | 87.28% | 60.18% |
+| 25 | 235 | 80.87% | 67.89% | 96.97% | 82.43% |
+| 26 | 114 | 79.37% | 65.80% | 96.49% | 81.14% |
+| 27 | 242 | 68.60% | 52.20% | 94.51% | 73.36% |
+| 28 | 102 | 72.84% | 57.28% | 94.68% | 75.98% |
+| 29 | 214 | 53.17% | 36.21% | 92.62% | 64.42% |
+| 30 | 266 | 72.68% | 57.09% | 96.94% | 77.02% |
+| **Mean over 20 patients** | **2,874** | **71.25%** | **58.21%** | **94.27%** | **76.24%** |
+
 ### How to inspect the evaluation
 
 1. Open `visualization/github/evaluation/summary.json` for cohort means, standard deviations, sample counts, and the definitions of each aggregation.
